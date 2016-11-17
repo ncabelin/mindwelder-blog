@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <br>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h1>All Posts by {{ view_username }} :</h1>
+            {% if view_username == user_logged %}
+              <!-- Check if viewed user is the same as logged in user -->
+              <a href="/newpost" class="btn btn-success">Add new post</a>
+            {% endif %}
+            <hr>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            {% for post in posts %}
+              <div>
+                <h2><a href="/view?p={{ post.key().id() }}&u={{ post.user_id }}">{{ post.subject }}</a></h2>
+                <h6>{{ post.likes }} likes, last modified - {{ post.date_modified | standard_date }}</h6>
+                {% if post.pic %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <a href="/view?p={{ post.key().id() }}&u={{ post.user_id }}"><img src="{{ post.pic }}" class="img-responsive"></a>
+                      <small>Images by Imgur.com</small>
+                    </div>
+                  </div>
+                {% endif %}
+                <p>{{ post.content | firstline }}... </p><a href="/view?p={{ post.key().id() }}&u={{ post.user_id }}" class="btn btn-primary btn-xs">read</a>
+                  {% if user_logged == view_username: %}
+                    <!-- Check if viewed user is the same as logged in user -->
+                    <a href="/editpost?pid={{ post.key().id() }}" class="btn btn-success btn-xs">edit</a>
+                  {% endif %}
+                <hr>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
